@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="hy">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Իմ Կայքը</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;700&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #080808;
+    --surface: #111;
+    --border: #1e1e1e;
+    --accent: #c8ff00;
+    --text: #f0f0f0;
+    --muted: #555;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .page { display: none; min-height: 100vh; }
+  .page.active { display: flex; flex-direction: column; }
+
+  #home {
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 2rem;
+  }
+
+  #home::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 50% at 50% 50%, #1a1a00 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .home-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 480px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .site-title {
+    font-family: 'Unbounded', sans-serif;
+    font-size: clamp(1.4rem, 5vw, 2.2rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--accent);
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+
+  .nav-btn {
+    width: 100%;
+    padding: 1.2rem 2rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'Unbounded', sans-serif;
+    font-size: clamp(0.7rem, 2.5vw, 0.88rem);
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-btn::after {
+    content: '→';
+    opacity: 0;
+    transform: translateX(-8px);
+    transition: all 0.25s ease;
+    color: var(--accent);
+    flex-shrink: 0;
+    margin-left: 1rem;
+  }
+
+  .nav-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: #0f0f00;
+    transform: translateX(4px);
+  }
+
+  .nav-btn:hover::after { opacity: 1; transform: translateX(0); }
+
+  .nav-btn span.num {
+    font-size: 0.6rem;
+    color: var(--muted);
+    margin-right: 1rem;
+    flex-shrink: 0;
+  }
+
+  .inner-page { padding: 0; }
+
+  .page-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.2rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    background: rgba(8,8,8,0.96);
+    backdrop-filter: blur(12px);
+    z-index: 10;
+    flex-wrap: wrap;
+  }
+
+  .back-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.78rem;
+    padding: 0.45rem 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .back-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  .page-title {
+    font-family: 'Unbounded', sans-serif;
+    font-size: clamp(0.8rem, 3vw, 1rem);
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    color: var(--text);
+  }
+
+  .save-notice {
+    font-size: 0.72rem;
+    color: var(--accent);
+    opacity: 0;
+    transition: opacity 0.3s;
+    margin-left: auto;
+  }
+  .save-notice.show { opacity: 1; }
+
+  .page-content {
+    flex: 1;
+    padding: 2rem 1.5rem;
+    max-width: 820px;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 0.58rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.25rem;
+  }
+
+  .text-block {
+    font-size: clamp(0.9rem, 2.5vw, 1rem);
+    line-height: 1.9;
+    color: #bbb;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .edit-toolbar {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .tool-btn {
+    padding: 0.45rem 1.1rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.78rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .tool-btn:hover, .tool-btn.active {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: #0f0f00;
+  }
+
+  .editable-area {
+    width: 100%;
+    min-height: 220px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    line-height: 1.8;
+    padding: 1.25rem;
+    resize: vertical;
+    transition: border-color 0.2s;
+    display: none;
+  }
+
+  .editable-area:focus { outline: none; border-color: var(--accent); }
+  .editable-area.visible { display: block; }
+
+  /* VIDEO */
+  .code-hint {
+    background: #0c0c00;
+    border: 1px solid #2a2a00;
+    border-left: 3px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    font-size: 0.8rem;
+    color: #888;
+    line-height: 1.8;
+  }
+
+  .code-hint strong { color: var(--accent); }
+  .code-hint code {
+    background: #1a1a00;
+    color: var(--accent);
+    padding: 0.1rem 0.4rem;
+    font-family: 'Courier New', monospace;
+    font-size: 0.78rem;
+  }
+
+  .video-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
+    gap: 1.5rem;
+  }
+
+  .video-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    animation: fadeIn 0.4s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .video-card iframe {
+    width: 100%;
+    aspect-ratio: 16/9;
+    display: block;
+    border: none;
+  }
+
+  .video-card-footer {
+    padding: 0.6rem 1rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .video-label {
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+
+  .empty-state {
+    color: var(--muted);
+    font-size: 0.88rem;
+    text-align: center;
+    padding: 3rem 1rem;
+    border: 1px dashed var(--border);
+    grid-column: 1 / -1;
+  }
+</style>
+</head>
+<body>
+
+<!-- ԳԼԽԱՎՈՐ ԷՋ -->
+<div id="home" class="page active">
+  <div class="home-inner">
+    <div class="site-title">ԻՄ ԿԱՅՔԸ</div>
+    <button class="nav-btn" onclick="goTo('info')">
+      <span><span class="num">01 —</span> Տեղեկատվություն</span>
+    </button>
+    <button class="nav-btn" onclick="goTo('tests')">
+      <span><span class="num">02 —</span> Թեստեր</span>
+    </button>
+    <button class="nav-btn" onclick="goTo('about')">
+      <span><span class="num">03 —</span> Մեր մասին</span>
+    </button>
+  </div>
+</div>
+
+<!-- ՏԵՂԵԿԱՏՎՈՒԹՅՈՒՆ -->
+<div id="info" class="page inner-page">
+  <div class="page-header">
+    <button class="back-btn" onclick="goTo('home')">← Հետ</button>
+    <span class="page-title">Տեղեկատվություն</span>
+    <span class="save-notice" id="info-saved">✓ Պահпанված</span>
+  </div>
+  <div class="page-content">
+    <div class="edit-toolbar">
+      <button class="tool-btn" id="info-btn" onclick="toggleEdit('info')">✏ Խմбагрел</button>
+    </div>
+    <div class="section-label">Бовандакутюн</div>
+    <div class="text-block" id="info-display">Сейместэ «Хмбагрел» козакы՝ текст авелацнелу хамар:</div>
+    <textarea class="editable-area" id="info-editor" placeholder="Мутqагрец текsты айстех..."></textarea>
+  </div>
+</div>
+
+<!-- ԹԵՍՏԵР (Видео) -->
+<div id="tests" class="page inner-page">
+  <div class="page-header">
+    <button class="back-btn" onclick="goTo('home')">← Հеть</button>
+    <span class="page-title">Тэстэр</span>
+  </div>
+  <div class="page-content">
+    <div class="section-label">Видеонер</div>
+
+    <div class="code-hint">
+      <strong>Инчпэс авелацнел видео:</strong><br>
+      Бацир файлы код хмбагрчов (Notepad, VS Code), ктир <code>VIDEOS_LIST</code>
+      бажинэ эв авелацру хэтэвял дзевов.<br><br>
+      Оринак:<br>
+      <code>{ url: "https://youtu.be/XXXXXXXXXXX", title: "Видеойи анунэ" },</code><br><br>
+      YouTube, Vimeo, Rutube — болорэ аджакцвум эн:
+    </div>
+
+    <div id="video-grid" class="video-grid"></div>
+  </div>
+</div>
+
+<!-- МЕР МАСИН -->
+<div id="about" class="page inner-page">
+  <div class="page-header">
+    <button class="back-btn" onclick="goTo('home')">← Հетъ</button>
+    <span class="page-title">Мер масин</span>
+    <span class="save-notice" id="about-saved">✓ Пахпанвац</span>
+  </div>
+  <div class="page-content">
+    <div class="edit-toolbar">
+      <button class="tool-btn" id="about-btn" onclick="toggleEdit('about')">✏ Хмбагрел</button>
+    </div>
+    <div class="section-label">Мер масин</div>
+    <div class="text-block" id="about-display">Сейместэ «Хмбагрел» козакы՝ текст авелацнелу хамар:</div>
+    <textarea class="editable-area" id="about-editor" placeholder="Мутqагрец текsты айстех..."></textarea>
+  </div>
+</div>
+
+<script>
+  // ================================================================
+  //  VIDEOS_LIST — АВЕЛАЦНЕЛ ВИДЕО АЙСТЕх
+  //
+  //  Оринак:
+  //  { url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", title: "Видео 1" },
+  //  { url: "https://youtu.be/abcdefghijk",                 title: "Видео 2" },
+  //  { url: "https://vimeo.com/123456789",                  title: "Видео 3" },
+  // ================================================================
+  const VIDEOS_LIST = [
+    // Авелацрек хнарин айстех ↓
+
+  ];
+  // ================================================================
+
+  function getEmbedUrl(url) {
+    url = url.trim();
+    let m;
+    m = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([A-Za-z0-9_-]{11})/);
+    if (m) return 'https://www.youtube.com/embed/' + m[1];
+    m = url.match(/youtube\.com\/shorts\/([A-Za-z0-9_-]{11})/);
+    if (m) return 'https://www.youtube.com/embed/' + m[1];
+    m = url.match(/vimeo\.com\/(\d+)/);
+    if (m) return 'https://player.vimeo.com/video/' + m[1];
+    m = url.match(/rutube\.ru\/video\/([a-f0-9]+)/);
+    if (m) return 'https://rutube.ru/play/embed/' + m[1];
+    if (url.startsWith('http')) return url;
+    return null;
+  }
+
+  function renderVideos() {
+    const grid = document.getElementById('video-grid');
+    const valid = VIDEOS_LIST.filter(v => getEmbedUrl(v.url));
+    if (!valid.length) {
+      grid.innerHTML = '<div class="empty-state">Видеонер дзер авелацвел эн</div>';
+      return;
+    }
+    grid.innerHTML = valid.map((v, i) =>
+      '<div class="video-card">' +
+        '<iframe src="' + getEmbedUrl(v.url) + '" allowfullscreen loading="lazy"></iframe>' +
+        '<div class="video-card-footer">' +
+          '<span class="video-label">' + (v.title || 'Видео ' + (i + 1)) + '</span>' +
+        '</div>' +
+      '</div>'
+    ).join('');
+  }
+
+  renderVideos();
+
+  // ---- Текст страницы ----
+  const stored = {
+    info:  localStorage.getItem('site_info')  || '',
+    about: localStorage.getItem('site_about') || ''
+  };
+
+  const placeholder = 'Сейместэ «Хмбагрел» козакы՝ текст авелацнелу хамар:';
+
+  function updateDisplay(page) {
+    document.getElementById(page + '-display').textContent = stored[page] || placeholder;
+    document.getElementById(page + '-editor').value = stored[page];
+  }
+
+  updateDisplay('info');
+  updateDisplay('about');
+
+  function goTo(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    window.scrollTo(0, 0);
+  }
+
+  const editMode = {};
+
+  function toggleEdit(page) {
+    const editor  = document.getElementById(page + '-editor');
+    const display = document.getElementById(page + '-display');
+    const btn     = document.getElementById(page + '-btn');
+
+    if (!editMode[page]) {
+      editor.classList.add('visible');
+      display.style.display = 'none';
+      btn.textContent = '💾 Пахпанел';
+      btn.classList.add('active');
+      editor.focus();
+      editMode[page] = true;
+    } else {
+      stored[page] = editor.value;
+      localStorage.setItem('site_' + page, stored[page]);
+      updateDisplay(page);
+      editor.classList.remove('visible');
+      display.style.display = '';
+      btn.textContent = '✏ Хмбагрел';
+      btn.classList.remove('active');
+      editMode[page] = false;
+      const notice = document.getElementById(page + '-saved');
+      notice.classList.add('show');
+      setTimeout(() => notice.classList.remove('show'), 2000);
+    }
+  }
+</script>
+</body>
+</html>
