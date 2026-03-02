@@ -297,7 +297,7 @@
 <!-- ԳԼԽԱՎՈՐ ԷՋ -->
 <div id="home" class="page active">
   <div class="home-inner">
-    <div class="site-title">ԻՄ ԿԱՅՔԸ</div>
+    <div class="site-title">9դ դասարան</div>
     <button class="nav-btn" onclick="goTo('info')">
       <span><span class="num">01 —</span> Տեղեկատվություն</span>
     </button>
@@ -315,54 +315,45 @@
   <div class="page-header">
     <button class="back-btn" onclick="goTo('home')">← Հետ</button>
     <span class="page-title">Տեղեկատվություն</span>
-    <span class="save-notice" id="info-saved">✓ Պահпанված</span>
+    <span class="save-notice" id="info-saved">✓ Պահպանված</span>
   </div>
   <div class="page-content">
     <div class="edit-toolbar">
-      <button class="tool-btn" id="info-btn" onclick="toggleEdit('info')">✏ Խմбагрел</button>
+      <button class="tool-btn" id="info-btn" onclick="toggleEdit('info')">✏ Խմբագրել</button>
     </div>
-    <div class="section-label">Бовандакутюн</div>
-    <div class="text-block" id="info-display">Сейместэ «Хмбагрел» козакы՝ текст авелацнелу хамар:</div>
-    <textarea class="editable-area" id="info-editor" placeholder="Мутqагрец текsты айстех..."></textarea>
+    <div class="section-label">բովանդակուցյուն </div>
+    <div class="text-block" id="info-display"></div>
+    <textarea class="editable-area" id="info-editor" placeholder="մուտքագրեք տեքստը այստեղ"></textarea>
   </div>
 </div>
 
-<!-- ԹԵՍՏԵР (Видео) -->
+<!-- ԹԵՍՏԵՐ (Видео) -->
 <div id="tests" class="page inner-page">
   <div class="page-header">
-    <button class="back-btn" onclick="goTo('home')">← Հеть</button>
-    <span class="page-title">Тэстэр</span>
+    <button class="back-btn" onclick="goTo('home')">← Հետ</button>
+    <span class="page-title">Թեստեր</span>
   </div>
   <div class="page-content">
-    <div class="section-label">Видеонер</div>
-
-    <div class="code-hint">
-      <strong>Инчпэс авелацнел видео:</strong><br>
-      Бацир файлы код хмбагрчов (Notepad, VS Code), ктир <code>VIDEOS_LIST</code>
-      бажинэ эв авелацру хэтэвял дзевов.<br><br>
-      Оринак:<br>
-      <code>{ url: "https://youtu.be/XXXXXXXXXXX", title: "Видеойи анунэ" },</code><br><br>
-      YouTube, Vimeo, Rutube — болорэ аджакцвум эн:
-    </div>
+    <div class="section-label">վիդեոներ</div>
 
     <div id="video-grid" class="video-grid"></div>
   </div>
 </div>
 
-<!-- МЕР МАСИН -->
+<!-- МЕР МАСԻՆ -->
 <div id="about" class="page inner-page">
   <div class="page-header">
-    <button class="back-btn" onclick="goTo('home')">← Հетъ</button>
-    <span class="page-title">Мер масин</span>
-    <span class="save-notice" id="about-saved">✓ Пахпанвац</span>
+    <button class="back-btn" onclick="goTo('home')">← Հետ</button>
+    <span class="page-title">Մեր մասին</span>
+    <span class="save-notice" id="about-saved">✓ Պահպանված</span>
   </div>
   <div class="page-content">
     <div class="edit-toolbar">
-      <button class="tool-btn" id="about-btn" onclick="toggleEdit('about')">✏ Хмбагрел</button>
+      <button class="tool-btn" id="about-btn" onclick="toggleEdit('about')">✏ Խմբագրել</button>
     </div>
-    <div class="section-label">Мер масин</div>
-    <div class="text-block" id="about-display">Сейместэ «Хмбагрел» козакы՝ текст авелацнелу хамар:</div>
-    <textarea class="editable-area" id="about-editor" placeholder="Мутqагрец текsты айстех..."></textarea>
+    <div class="section-label">Մեր մասին</div>
+    <div class="text-block" id="about-display"></div>
+    <textarea class="editable-area" id="about-editor" placeholder="մուտքագրեք տեքստը այստեղ"></textarea>
   </div>
 </div>
 
@@ -377,7 +368,9 @@
   // ================================================================
   const VIDEOS_LIST = [
     // Авелацрек хнарин айстех ↓
-
+    { url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", title: "Видео 1" },
+//    { url: "https://youtu.be/abcdefghijk",                 title: "Видео 2" },
+//    { url: "https://vimeo.com/123456789",                  title: "Видео 3" },
   ];
   // ================================================================
 
@@ -400,7 +393,7 @@
     const grid = document.getElementById('video-grid');
     const valid = VIDEOS_LIST.filter(v => getEmbedUrl(v.url));
     if (!valid.length) {
-      grid.innerHTML = '<div class="empty-state">Видеонер дзер авелацвел эн</div>';
+      grid.innerHTML = '<div class="empty-state">/div>';
       return;
     }
     grid.innerHTML = valid.map((v, i) =>
@@ -421,7 +414,7 @@
     about: localStorage.getItem('site_about') || ''
   };
 
-  const placeholder = 'Сейместэ «Хмбагрел» козакы՝ текст авелацнелу хамар:';
+  const placeholder = '';
 
   function updateDisplay(page) {
     document.getElementById(page + '-display').textContent = stored[page] || placeholder;
@@ -447,7 +440,7 @@
     if (!editMode[page]) {
       editor.classList.add('visible');
       display.style.display = 'none';
-      btn.textContent = '💾 Пахпанел';
+      btn.textContent = '💾 պահպանել';
       btn.classList.add('active');
       editor.focus();
       editMode[page] = true;
@@ -457,7 +450,7 @@
       updateDisplay(page);
       editor.classList.remove('visible');
       display.style.display = '';
-      btn.textContent = '✏ Хмбагрел';
+      btn.textContent = '✏ խմբագրել';
       btn.classList.remove('active');
       editMode[page] = false;
       const notice = document.getElementById(page + '-saved');
