@@ -7,26 +7,40 @@
 <style>
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
+  :root {
+    --surface: #111;
+    --border: #1e1e1e;
+    --accent: white;
+    --text: #f0f0f0;
+    --muted: #555;
+  }
 
   body {
-    background: var(--bg) image("https://imgur.com/a/nNGCj1V");
+    background-color: #111;
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
   }
 
   .page { display: none; min-height: 100vh; }
   .page.active { display: flex; flex-direction: column; }
 
   #home {
+    background-image: url(Axetner.png);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     align-items: center;
     justify-content: center;
     position: relative;
     padding: 2rem;
+    background-color: #111;
   }
-
+  
   #home::before {
     content: '';
     position: fixed;
     inset: 0;
-    background: radial-gradient(ellipse 60% 50% at 50% 50%, #1a1a00 0%, transparent 70%);
     pointer-events: none;
   }
 
@@ -39,16 +53,23 @@
     max-width: 480px;
     position: relative;
     z-index: 1;
+    opacity: 0;
+    transition: opacity 1s ease;
   }
 
   .site-title {
     font-family: 'Unbounded', sans-serif;
     font-size: clamp(1.4rem, 5vw, 2.2rem);
-    font-weight: 700;
+    font-weight: 500;
     letter-spacing: -0.02em;
-    color: var(--accent);
     text-align: center;
     margin-bottom: 1rem;
+    color: rgb(202, 202, 202);
+    border-style: solid;
+    border-radius: 12px;
+    border-color: black;
+    padding: 0.5rem 1.5rem;
+    background: #111;
   }
 
   .nav-btn {
@@ -127,6 +148,19 @@
   }
 
   .back-btn:hover { border-color: var(--accent); color: var(--accent); }
+   
+   .Mer-masin {
+    font-family: 'Unbounded', sans-serif;
+    font-size: clamp(1.2rem, 4vw, 1.8rem);
+    color: white;
+    border: 1px solid white;
+    border-radius: 15px;
+    padding: 0.5rem 1.5rem;
+    background: black;
+    margin: 1.5rem 0;
+    position: static;
+    width: fit-content;
+   }
 
   .page-title {
     font-family: 'Unbounded', sans-serif;
@@ -180,19 +214,44 @@
 
   .tool-btn {
     padding: 0.45rem 1.1rem;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    color: var(--muted);
+    background: #000;
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
     font-family: 'Inter', sans-serif;
     font-size: 0.78rem;
     cursor: pointer;
     transition: all 0.2s;
+    border-radius: 999px;
   }
 
   .tool-btn:hover, .tool-btn.active {
     border-color: var(--accent);
-    color: var(--accent);
-    background: #0f0f00;
+    color: #fff;
+    background: #111;
+  }
+
+  .tool-text {
+    display: inline-flex;
+    padding: 0.45rem 1.1rem;
+    background: #000;
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.78rem;
+    max-width: 100%;
+    word-break: break-word;
+  }
+
+  .tool-text2 {
+    display: inline-flex;
+    padding: 0.45rem 1.1rem;
+    background: #000;
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.78rem;
+    max-width: 100%;
+    word-break: break-word;
   }
 
   .editable-area {
@@ -281,10 +340,9 @@
 </head>
 <body>
 
-<!-- ԳԼԽԱՎՈՐ ԷՋ -->
 <div id="home" class="page active">
   <div class="home-inner">
-    <div class="site-title">նախագծային</div>
+    <div class="site-title">Մարդածին աղետներ</div>
     <button class="nav-btn" onclick="goTo('info')">
       <span><span class="num">01 —</span> Տեղեկատվություն</span>
     </button>
@@ -306,11 +364,8 @@
   </div>
   <div class="page-content">
     <div class="edit-toolbar">
-      <button class="tool-btn" id="info-btn" onclick="toggleEdit('info')">✏ Խմբագրել</button>
-    </div>
-    <div class="section-label">բովանդակուցյուն</div>
+      <div class="tool-text">ճ</div>
     <div class="text-block" id="info-display"></div>
-    <textarea class="editable-area" id="info-editor" placeholder="մուտքագրեք տեքստը այստեղ"></textarea>
   </div>
 </div>
 
@@ -320,6 +375,30 @@
     <button class="back-btn" onclick="goTo('home')">← Հետ</button>
     <span class="page-title">նյութեր</span>
   </div>
+  <div class="edit-toolbar">
+      <div class="tool-text">Մարդածին Աղետներ. Երբ Բնությունը Դառնում է Անպաշտպան
+Մարդկային քաղաքակրթության զարգացումը, գիտատեխնիկական առաջընթացը և արդյունաբերության հզորացումը, դրական փոփոխություններին զուգահեռ, իրենց հետ բերել են նաև նորագույն մարտահրավերներ։ Մարդածին աղետները այն ողբերգական իրադարձություններն են, որոնց պատճառը ոչ թե բնության տարերքն է, այլ մարդու գործունեությունը, սխալ հաշվարկը կամ անփութությունը։
+1. Տեխնոլոգիական և Ճառագայթային Վտանգներ
+Ատոմային էներգիան մարդկության ամենամեծ նվաճումներից է, սակայն այն պահանջում է բացառիկ զգոնություն։ Ճառագայթային աղետները թողնում են «անտեսանելի հետքեր», որոնք տասնամյակներ շարունակ ազդում են էկոհամակարգի վրա։
+Չեռնոբիլ (1986թ.). Պատմության ամենախոշոր տեխնոլոգիական վթարը, որը փոխեց աշխարհի վերաբերմունքը միջուկային անվտանգության նկատմամբ։
+Ազդեցությունը. Հազարավոր քառակուսի կիլոմետրեր դարձան բնակության համար ոչ պիտանի, իսկ գենետիկ փոփոխությունները շարունակվում են մինչ օրս։
+2. Քիմիական Արտանետումներ և Թունավորումներ
+Արդյունաբերական հսկաները հաճախ դառնում են էկոլոգիական ռումբեր։ Քիմիական նյութերի արտահոսքը վայրկյանների ընթացքում կարող է կյանքից զրկել հազարավոր մարդկանց և ոչնչացնել տեղի ֆլորան ու ֆաունան։
+Բհոպալի ողբերգությունը. Հնդկաստանում տեղի ունեցած այս աղետը հիշեցնում է մեզ, թե որքան թանկ կարող է լինել անվտանգության կանոնների անտեսման գինը։
+3. Էկոլոգիական և Ջրային Աղետներ
+Նավթատար նավերի վթարները և ջրային ավազանների աղտոտումը հանգեցնում են «մեռյալ գոտիների» առաջացմանը համաշխարհային օվկիանոսում։
+Նավթային արտահոսքեր. Ջրի մակերևույթին առաջացած բարակ նավթաշերտը խզում է կապը մթնոլորտի և ջրի միջև՝ թթվածնաքաղցի մատնելով ջրային բոլոր բնակիչներին։
+Անտառահատումներ և անապատացում. Մարդու կողմից բնական լանդշաֆտների կոպիտ փոփոխությունը նույնպես դասվում է մարդածին աղետների շարքին, քանի որ այն հանգեցնում է կլիմայական կտրուկ փոփոխությունների։
+4. Տրանսպորտային Համակարգերի Խափանումներ
+Օդային, ծովային և երկաթուղային խոշոր վթարները, որոնք տեղի են ունենում տեխնիկական անսարքության կամ «մարդկային գործոնի» պատճառով, տարեկան խլում են հազարավոր կյանքեր և պատճառում հսկայական նյութական վնասներ։
+Մեր Պատասխանատվությունը
+Մարդածին աղետների մեծ մասը կարելի է կանխել։ Դրա համար անհրաժեշտ է.
+Գիտելիք և կրթություն. Ճանաչել վտանգները և հասկանալ դրանց բնույթը։
+Տեխնոլոգիական կարգապահություն. Չխախտել անվտանգության և ոչ մի օրենք։
+Էկոլոգիական գիտակցություն. Հասկանալ, որ մենք բնության տերը չենք, այլ նրա մի մասնիկը։
+«Մենք չենք ժառանգել Երկիրը մեր նախնիներից, մենք այն պարտքով վերցրել ենք մեր երեխաներից»։
+</div>
+    </div>
   <div class="page-content">
     <div class="section-label">վիդեոներ</div>
 
@@ -332,15 +411,16 @@
   <div class="page-header">
     <button class="back-btn" onclick="goTo('home')">← Հետ</button>
     <span class="page-title">Մեր մասին</span>
-    <span class="save-notice" id="about-saved">✓ Պահպանված</span>
   </div>
   <div class="page-content">
     <div class="edit-toolbar">
-      <button class="tool-btn" id="about-btn" onclick="toggleEdit('about')">✏ Խմբագրել</button>
+      <div class="tool-text2">Բարի գալուստ մեր նախագծային աշխատանքի հարթակ։ Մենք Ջրվեժի միջնակարգ դպրոցի 9-րդ դասարանի աշակերտներն ենք։
+Ինչո՞ւ հենց այս կայքը։
+Այս կայքը ստեղծվել է մեր նախագծային աշխատանքի շրջանակներում, որի թեման է «Մարդածին աղետներ»։ Մեր նպատակն է բարձրացնել իրազեկվածությունը այն աղետների մասին, որոնք առաջանում են մարդու գործունեության հետևանքով և կարող են անդառնալի վնաս հասցնել մեր մոլորակին։
+Մեր տեսլականը
+Մենք հավատում ենք, որ գիտելիքը առաջին քայլն է աղետները կանխելու ճանապարհին։ Այս հարթակի միջոցով մենք փորձել ենք մեկտեղել կարևոր տեղեկություններ տարբեր տեսակի մարդածին աղետների, դրանց պատճառների և հետևանքների մասին։</div>
     </div>
-    <div class="section-label">Մեր մասին</div>
     <div class="text-block" id="about-display"></div>
-    <textarea class="editable-area" id="about-editor" placeholder="մուտքագրեք տեքստը այստեղ"></textarea>
   </div>
 </div>
 
@@ -405,7 +485,6 @@
 
   function updateDisplay(page) {
     document.getElementById(page + '-display').textContent = stored[page] || placeholder;
-    document.getElementById(page + '-editor').value = stored[page];
   }
 
   updateDisplay('info');
@@ -417,34 +496,10 @@
     window.scrollTo(0, 0);
   }
 
-  const editMode = {};
-
-  function toggleEdit(page) {
-    const editor  = document.getElementById(page + '-editor');
-    const display = document.getElementById(page + '-display');
-    const btn     = document.getElementById(page + '-btn');
-
-    if (!editMode[page]) {
-      editor.classList.add('visible');
-      display.style.display = 'none';
-      btn.textContent = '💾 պահպանել';
-      btn.classList.add('active');
-      editor.focus();
-      editMode[page] = true;
-    } else {
-      stored[page] = editor.value;
-      localStorage.setItem('site_' + page, stored[page]);
-      updateDisplay(page);
-      editor.classList.remove('visible');
-      display.style.display = '';
-      btn.textContent = '✏ խմբագրել';
-      btn.classList.remove('active');
-      editMode[page] = false;
-      const notice = document.getElementById(page + '-saved');
-      notice.classList.add('show');
-      setTimeout(() => notice.classList.remove('show'), 2000);
-    }
-  }
+  // Show home content after 5 seconds
+  setTimeout(() => {
+    document.querySelector('.home-inner').style.opacity = '1';
+  }, 5000);
 </script>
 </body>
 </html>
